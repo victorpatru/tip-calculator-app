@@ -9,8 +9,9 @@ module.exports = {
         darkGrayishCyan: "hsl(186, 14%, 43%)",
         grayishCyan: "hsl(184, 14%, 56%)",
         lightGrayishCyan: "hsl(185, 41%, 84%)",
-        veryLightGrayishCyan: "hsl(189, 41%, 97%)",
+        veryLightGrayishCyan: "hsl(199, 52%, 97%)",
         white: "hsl(0, 0%, 100%)",
+        hoverCyan: "hsl(174, 62% 76%)",
       },
       fontSize: {
         xl: "24px",
