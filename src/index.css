@@ -27,3 +27,8 @@ li:last-child {
 #people-selection::placeholder {
   text-align: right;
 }
+
+.invalid {
+  border: 2px solid red;
+  outline: none;
+}

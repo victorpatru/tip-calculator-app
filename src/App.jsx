@@ -1,6 +1,62 @@
 import "./App.css";
+import { useEffect, useState } from "react";
 
 function App() {
+  // Math Logic
+
+  const tipAmount = (tip, bill, people) => {
+    return +(((tip / 100) * bill) / people).toFixed(2);
+  };
+
+  const totalAmount = (tip, bill, people) => {
+    return +((bill + (tip / 100) * bill) / people).toFixed(2);
+  };
+
+  // Application State
+  const [bill, setBill] = useState(0);
+  const [tip, setTip] = useState(0);
+  const [people, setPeople] = useState(0);
+
+  // useEffect(() => {
+  //   const totalAmount = totalAmount(tip, bill, people);
+  //   const tipAmount = tipAmount(tip, bill, people);
+  // }, []);
+  // Bill Amount Handle
+  const handleBillChange = e => {
+    setBill(+e.target.value);
+  };
+
+  // Selected Tip Percentage Handlers
+  const handleSelection = e => {
+    e.preventDefault();
+
+    e.target.style.backgroundColor = "hsl(172 69% 45%)";
+    setTip(+e.currentTarget.value);
+  };
+
+  const handleCustomTip = e => {
+    e.preventDefault();
+
+    if (+e.target.value <= 100 && +e.target.value > 0) {
+      setTip(+e.target.value);
+    } else {
+      e.target.value = "";
+      alert("Please input a valid tip percentage");
+    }
+  };
+
+  const handlePeopleSelection = e => {
+    e.preventDefault();
+    if (e.target.value < 0) {
+      e.target.classList.add("invalid");
+      document.getElementById("error").classList.remove("hidden");
+    } else {
+      e.target.classList.remove("invalid");
+      document.getElementById("error").classList.add("hidden");
+      setPeople(+e.target.value);
+    }
+  };
+
   return (
     <main className="bg-lightGrayishCyan min-h-screen flex flex-col justify-center items-center font-monospace">
       {/* Logo */}
@@ -24,6 +80,7 @@ function App() {
                     id="bill-selection"
                     type="number"
                     className="bg-veryLightGrayishCyan py-2 px-10 mt-2 rounded text-right text-veryDarkCyan w-full focus:outline-strongCyan"
+                    onChange={handleBillChange}
                   />
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -43,43 +100,52 @@ function App() {
           {/* Tip Selection Section */}
           <section id="tip-section" className="mx-12 mt-8">
             <h3 className="text-darkGrayishCyan">Select tip %</h3>
-            <ul className="grid grid-cols-2 md:grid-cols-3 mt-2 gap-3 text-center">
-              <li>
-                <a href="#">5%</a>
-              </li>
-              <li>
-                <a href="#">10%</a>
-              </li>
-              <li>
-                <a href="#">15%</a>
-              </li>
-              <li>
-                <a href="#">25%</a>
-              </li>
-              <li>
-                <a href="#">50%</a>
-              </li>
-              <li>
-                <input
-                  id="tip-selection"
-                  type="text"
-                  placeholder="Custom"
-                  className="bg-veryLightGrayishCyan w-full text-right py-2 px-3 focus:outline-strongCyan"
-                />
-              </li>
-            </ul>
+            <form>
+              <ul className="grid grid-cols-2 md:grid-cols-3 mt-2 gap-3 text-center">
+                <li onClick={handleSelection} value="5">
+                  <a href="#">5%</a>
+                </li>
+                <li onClick={handleSelection} value="10">
+                  <a href="#">10%</a>
+                </li>
+                <li onClick={handleSelection} value="15">
+                  <a href="#">15%</a>
+                </li>
+                <li onClick={handleSelection} value="25">
+                  <a href="#">25%</a>
+                </li>
+                <li onClick={handleSelection} value="50">
+                  <a href="#">50%</a>
+                </li>
+                <li>
+                  <input
+                    id="tip-selection"
+                    type="text"
+                    placeholder="Custom"
+                    className="bg-veryLightGrayishCyan w-full text-right py-2 px-3 focus:outline-strongCyan"
+                    onChange={handleCustomTip}
+                  />
+                </li>
+              </ul>
+            </form>
           </section>
           {/* Number of People Selection Section */}
           <section id="people" className="m-12 mt-8">
             <form>
               <label>
-                <h3 className="text-darkGrayishCyan">Number of people</h3>
+                <div className="flex justify-between items-center">
+                  <h3 className="text-darkGrayishCyan">Number of people</h3>
+                  <h3 className="text-red-400 text-sm hidden" id="error">
+                    Try a valid input
+                  </h3>
+                </div>
                 <div className="relative">
                   <input
                     id="people-selection"
                     type="number"
                     placeholder="0"
                     className="bg-veryLightGrayishCyan py-2 px-10 mt-2 rounded text-right text-veryDarkCyan w-full focus:outline-strongCyan"
+                    onChange={handlePeopleSelection}
                   />
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +176,7 @@ function App() {
               <span className="text-sm text-grayishCyan"> / person</span>
             </div>
             <span id="tip-amount" className="text-5xl text-strongCyan">
-              $0.00
+              {`$`}
             </span>
           </section>
 
@@ -121,7 +187,7 @@ function App() {
               <span className="text-sm text-grayishCyan"> / person</span>
             </div>
             <span id="total" className="text-5xl text-strongCyan">
-              $0.00
+              {`$`}
             </span>
           </section>
 
