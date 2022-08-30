@@ -2,25 +2,27 @@ import "./App.css";
 import { useEffect, useState } from "react";
 
 function App() {
-  // Math Logic
-
-  const tipAmount = (tip, bill, people) => {
+  const tipAmountLogic = (tip, bill, people) => {
     return +(((tip / 100) * bill) / people).toFixed(2);
   };
 
-  const totalAmount = (tip, bill, people) => {
+  const totalAmountLogic = (tip, bill, people) => {
     return +((bill + (tip / 100) * bill) / people).toFixed(2);
   };
 
   // Application State
   const [bill, setBill] = useState(0);
-  const [tip, setTip] = useState(0);
+  const [tip, setTip] = useState();
   const [people, setPeople] = useState(0);
+  const [tipAmount, setTipAmount] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
 
-  // useEffect(() => {
-  //   const totalAmount = totalAmount(tip, bill, people);
-  //   const tipAmount = tipAmount(tip, bill, people);
-  // }, []);
+  useEffect(() => {
+    if (bill && tip && people) {
+      setTipAmount(tipAmountLogic(tip, bill, people));
+      setTotalAmount(totalAmountLogic(tip, bill, people));
+    }
+  }, [bill, tip, people]);
   // Bill Amount Handle
   const handleBillChange = e => {
     setBill(+e.target.value);
@@ -57,6 +59,11 @@ function App() {
     }
   };
 
+  const handleReset = () => {
+    setTipAmount(0);
+    setTotalAmount(0);
+  };
+
   return (
     <main className="bg-lightGrayishCyan min-h-screen flex flex-col justify-center items-center font-monospace">
       {/* Logo */}
@@ -67,7 +74,7 @@ function App() {
         Spli {<br></br>} tter
       </h1>
       {/* Tip Calculator Container */}
-      <section className="flex flex-col bg-white min-h-[400px] max-w-4xl rounded-[40px] shadow-xl md:flex-row">
+      <section className="flex flex-col bg-white min-h-[400px] max-w-5xl rounded-[40px] shadow-xl md:flex-row">
         {/* Left Section */}
         <section id="left" className="min-w-[400px]">
           {/* Bill Section */}
@@ -167,27 +174,33 @@ function App() {
         {/* Right Side Section  */}
         <section
           id="right"
-          className=" bg-veryDarkCyan m-5 rounded-2xl flex flex-col justify-center items-center px-8 py-12  md:py-15 md:px-12"
+          className=" bg-veryDarkCyan max-w-lg m-5 rounded-2xl flex flex-col justify-center items-center px-8 py-12  md:py-15 md:px-12"
         >
           {/* Tip Amount Section */}
-          <section className="flex flex-row items-center justify-between space-x-24 mt-6 ">
-            <div>
+          <section className="relative flex flex-row items-center justify-center space-x-60 mt-6 ">
+            <div className="mr-56">
               <h3 className="text-white mb-1">Tip Amount</h3>
               <span className="text-sm text-grayishCyan"> / person</span>
             </div>
-            <span id="tip-amount" className="text-5xl text-strongCyan">
-              {`$`}
+            <span
+              id="tip-amount"
+              className="text-5xl text-strongCyan fixed right-[370px]"
+            >
+              {`$${tipAmount}`}
             </span>
           </section>
 
           {/* Total Amount Section */}
-          <section className="relative flex-1 flex flex-row items-center justify-between space-x-32 mt-10">
-            <div className="">
+          <section className="relative flex flex-row items-center justify-center space-x-60 mt-10">
+            <div className="mr-60">
               <h3 className="text-white mb-1">Total</h3>
               <span className="text-sm text-grayishCyan"> / person</span>
             </div>
-            <span id="total" className="text-5xl text-strongCyan">
-              {`$`}
+            <span
+              id="total"
+              className="text-5xl text-strongCyan fixed right-[370px]"
+            >
+              {`$${totalAmount}`}
             </span>
           </section>
 
@@ -195,6 +208,7 @@ function App() {
           <button
             id="reset"
             className=" bg-strongCyan text-veryDarkCyan uppercase text-lg px-36 py-3 rounded-lg mt-10 md:mt-20 hover:bg-hoverCyan"
+            onClick={handleReset}
           >
             Reset
           </button>
