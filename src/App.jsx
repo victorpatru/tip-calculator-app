@@ -174,7 +174,7 @@ function App() {
         {/* Right Side Section  */}
         <section
           id="right"
-          className=" bg-veryDarkCyan max-w-lg m-5 rounded-2xl flex flex-col justify-center items-center px-8 py-12  md:py-15 md:px-12"
+          className=" bg-veryDarkCyan max-w-xl m-5 rounded-2xl flex flex-col justify-center items-center px-8 py-12  md:py-15 md:px-12"
         >
           {/* Tip Amount Section */}
           <section className="relative flex flex-row items-center justify-center space-x-60 mt-6 ">
@@ -184,7 +184,7 @@ function App() {
             </div>
             <span
               id="tip-amount"
-              className="text-5xl text-strongCyan fixed right-[370px]"
+              className="text-5xl text-strongCyan absolute right-5"
             >
               {`$${tipAmount}`}
             </span>
@@ -198,7 +198,7 @@ function App() {
             </div>
             <span
               id="total"
-              className="text-5xl text-strongCyan fixed right-[370px]"
+              className="text-5xl text-strongCyan absolute right-5"
             >
               {`$${totalAmount}`}
             </span>
